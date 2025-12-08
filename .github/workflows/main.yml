@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - 'dbscripts/**' 
+      - 'ddl/**' 
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
