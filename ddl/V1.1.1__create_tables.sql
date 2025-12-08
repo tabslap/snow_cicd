@@ -2,7 +2,7 @@
 -- Snowflake-compatible DDL for a small data warehouse (star schema + SCD2 dims)
 
 -- 1) create schema
-CREATE OR REPLACE SCHEMA IF NOT EXISTS PI_INGEST;
+CREATE OR REPLACE SCHEMA PI_INGEST;
 
 -- 2) date dimension (static lookup)
 CREATE OR REPLACE TABLE PI_INGEST.DIM_DATE (
