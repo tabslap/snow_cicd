@@ -1,5 +1,5 @@
 -- Insert sample data into PI_INGEST tables
-USE SCHEMA PI_INGEST;
+-- USE SCHEMA PI_INGEST;
 
 -------------------------------------
 -- 1) DIM_DATE (small sample values)
