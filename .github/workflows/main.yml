@@ -42,7 +42,7 @@ jobs:
           SF_ROLE: ${{ secrets.SF_ROLE }}
           SF_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
           SF_DATABASE: ${{ secrets.SF_DATABASE }}
-          SF_PASSWORD: 777@@@bbbiiisssHHH
+          SF_PASSWORD: ${{ secrets.SF_PASSWORD }}
         run: |
           # Path to your change scripts (adjust if different)
           ROOT_FOLDER="$GITHUB_WORKSPACE/ddl"
