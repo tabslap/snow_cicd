@@ -29,4 +29,4 @@ jobs:
         default-config-file-path: "config.toml"
     - name: Fetch the latest update from Github
       run: |
-        snow sql -q "ALTER GIT REPOSITORY SFLAB_DEMO_NB FETCH;"
+        snow sql -q "ALTER GIT REPOSITORY SNOW_CICD FETCH;"
