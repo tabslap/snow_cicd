@@ -27,7 +27,7 @@ jobs:
     
     # Step 3: Install the Snowflake CLI using the correct action with correct casing
     - name: Install Snowflake CLI
-      uses: Snowflake-Labs/setup-snow-cli@v1 # <-- THIS LINE IS THE FIX
+      uses: Snowflake-Labs/setup-snow-cli@v1
       with:
         snow-cli-version: "latest"
 
