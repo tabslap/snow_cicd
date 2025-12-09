@@ -5,43 +5,43 @@ on:
     branches: [ "dev" ]
 
 env:
-  SNOW_GIT_REPO: ${{ secrets.SF_GIT_REPO }}   # e.g. SF.PUBLIC.SNOW_CICD
+  SNOW_GIT_REPO: ${{ secrets.SF_GIT_REPO }}
 
 jobs:
   fetch-repo:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout repo (optional)
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: Install SnowSQL (official binary)
+      - name: Install SnowSQL
         run: |
           curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.32-linux_x86_64.bash
           SNOWSQL_DEST=${HOME}/bin SNOWSQL_LOGIN_SHELL=~/.profile bash snowsql-1.2.32-linux_x86_64.bash
-          # add the installation location to the runner PATH using the supported approach
           echo "${HOME}/bin" >> $GITHUB_PATH
 
       - name: Verify SnowSQL
         run: snowsql -v
 
-      - name: Fetch Git repository in Snowflake (ALTER GIT REPOSITORY ... FETCH)
+      - name: Fetch Git repository in Snowflake
         env:
-          SNOWSQL_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
-          SNOWSQL_USER:    ${{ secrets.SF_USER }}
-          SNOWSQL_PWD:     ${{ secrets.SF_PASSWORD }}
-          SNOWSQL_DATABASE: ${{ secrets.SF_DATABASE }}
-          SNOWSQL_SCHEMA:   ${{ secrets.SF_SCHEMA }}
-          SNOWSQL_ROLE:     ${{ secrets.SF_ROLE }}
+          SNOWSQL_ACCOUNT:   ${{ secrets.SF_ACCOUNT }}
+          SNOWSQL_USER:      ${{ secrets.SF_USER }}
+          SNOWSQL_PWD:       ${{ secrets.SF_PASSWORD }}
+          SNOWSQL_DATABASE:  ${{ secrets.SF_DATABASE }}
+          SNOWSQL_SCHEMA:    ${{ secrets.SF_SCHEMA }}
+          SNOWSQL_ROLE:      ${{ secrets.SF_ROLE }}
           SNOWSQL_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
-          SNOW_GIT_REPO: ${{ secrets.SF_GIT_REPO }}
-        
+          SNOW_GIT_REPO:     ${{ secrets.SF_GIT_REPO }}
+
         run: |
-          # run ALTER GIT REPOSITORY $SF_GIT_REPO FETCH;
-          snowsql -a "$SNOWSQL_ACCOUNT" \
-                  -u "$SNOWSQL_USER" \
-                  -p "$SNOWSQL_PWD" \
-                  -r "$SNOWSQL_ROLE" \
-                  -d "$SNOWSQL_DATABASE" \
-                  -s "$SNOWSQL_SCHEMA" \
-                  -w "$SNOWSQL_WAREHOUSE" \
-                  -q "ALTER GIT REPOSITORY $SF_GIT_REPO FETCH;"
+          snowsql \
+            -a "$SNOWSQL_ACCOUNT" \
+            -u "$SNOWSQL_USER" \
+            -p "$SNOWSQL_PWD" \
+            -r "$SNOWSQL_ROLE" \
+            -d "$SNOWSQL_DATABASE" \
+            -s "$SNOWSQL_SCHEMA" \
+            -w "$SNOWSQL_WAREHOUSE" \
+            -q "ALTER GIT REPOSITORY $SNOW_GIT_REPO FETCH;"
