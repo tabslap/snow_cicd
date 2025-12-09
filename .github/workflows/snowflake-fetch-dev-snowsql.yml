@@ -35,35 +35,14 @@ jobs:
           SNOWSQL_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
           SNOW_GIT_REPO:     ${{ secrets.SF_GIT_REPO }}
 
-        # run: |
-        #   snowsql \
-        #     -a "$SNOWSQL_ACCOUNT" \
-        #     -u "$SNOWSQL_USER" \
-        #     -p "$SNOWSQL_PWD" \
-        #     -r "$SNOWSQL_ROLE" \
-        #     -d "$SNOWSQL_DATABASE" \
-        #     -s "$SNOWSQL_SCHEMA" \
-        #     -w "$SNOWSQL_WAREHOUSE" \
-        #     -q "ALTER GIT REPOSITORY SF.REPO.SNOW_CICD FETCH;"
-        
-      - name: Debug variable presence
         run: |
-          echo "SNOWSQL_ACCOUNT length: ${#SNOWSQL_ACCOUNT}"
-          echo "SNOWSQL_USER length: ${#SNOWSQL_USER}"
-          echo "SNOWSQL_PWD length: ${#SNOWSQL_PWD}"
-          echo "SNOWSQL_DATABASE length: ${#SNOWSQL_DATABASE}"
-          echo "SNOWSQL_SCHEMA length: ${#SNOWSQL_SCHEMA}"
-          echo "SNOWSQL_ROLE length: ${#SNOWSQL_ROLE}"
-          echo "SNOWSQL_WAREHOUSE length: ${#SNOWSQL_WAREHOUSE}"
-          echo "SNOW_GIT_REPO length: ${#SNOW_GIT_REPO}"
-
-        # run: |
-        #   snowsql \
-        #     -a "GNNRQEF-WM06579" \
-        #     -u "TABISH" \
-        #     -p "777@@@bbbiiisssHHH" \
-        #     -r "ACCOUNTADMIN" \
-        #     -d "SF" \
-        #     -s "REPO" \
-        #     -w "COMPUTE_WH" \
-        #     -q "ALTER GIT REPOSITORY SF.REPO.SNOW_CICD FETCH;"
+          snowsql \
+            -a "$SNOWSQL_ACCOUNT" \
+            -u "$SNOWSQL_USER" \
+            -p "$SNOWSQL_PWD" \
+            -r "$SNOWSQL_ROLE" \
+            -d "$SNOWSQL_DATABASE" \
+            -s "$SNOWSQL_SCHEMA" \
+            -w "$SNOWSQL_WAREHOUSE" \
+            -q "ALTER GIT REPOSITORY SF.REPO.SNOW_CICD FETCH;"
+        
