@@ -35,13 +35,24 @@ jobs:
           SNOWSQL_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
           SNOW_GIT_REPO:     ${{ secrets.SF_GIT_REPO }}
 
+        # run: |
+        #   snowsql \
+        #     -a "$SNOWSQL_ACCOUNT" \
+        #     -u "$SNOWSQL_USER" \
+        #     -p "$SNOWSQL_PWD" \
+        #     -r "$SNOWSQL_ROLE" \
+        #     -d "$SNOWSQL_DATABASE" \
+        #     -s "$SNOWSQL_SCHEMA" \
+        #     -w "$SNOWSQL_WAREHOUSE" \
+        #     -q "ALTER GIT REPOSITORY SF.REPO.SNOW_CICD FETCH;"
+
         run: |
           snowsql \
-          #   -a "$SNOWSQL_ACCOUNT" \
-          #   -u "$SNOWSQL_USER" \
-          #   -p "$SNOWSQL_PWD" \
-          #   -r "$SNOWSQL_ROLE" \
-          #   -d "$SNOWSQL_DATABASE" \
-          #   -s "$SNOWSQL_SCHEMA" \
-          #   -w "$SNOWSQL_WAREHOUSE" \
-            -q "SHOW GIT BRANCHES IN GIT REPOSITORY SF.REPO.SNOW_CICD;"
+            -a "GNNRQEF-WM06579" \
+            -u "TABISH" \
+            -p "777@@@bbbiiisssHHH" \
+            -r "ACCOUNTADMIN" \
+            -d "SF" \
+            -s "PI_INGEST" \
+            -w "COMPUTE_WH" \
+            -q "ALTER GIT REPOSITORY SF.REPO.SNOW_CICD FETCH;"
