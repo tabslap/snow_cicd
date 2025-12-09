@@ -33,6 +33,7 @@ jobs:
           SNOWSQL_SCHEMA:   ${{ secrets.SF_SCHEMA }}
           SNOWSQL_ROLE:     ${{ secrets.SF_ROLE }}
           SNOWSQL_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
+          SNOW_GIT_REPO: ${{ secrets.SF_GIT_REPO }}
         
         run: |
           # run ALTER GIT REPOSITORY $SNOW_GIT_REPO FETCH;
