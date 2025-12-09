@@ -4,14 +4,11 @@ LANGUAGE SQL
 AS
 $$
 BEGIN
-    FOR i IN 1 TO 10 DO
-        INSERT INTO SF.PI_INGEST.RAW_ORDERS (LOAD_TS, ORDER_JSON, RAW_ORDER_ID)
+    INSERT INTO SF.PI_INGEST.RAW_ORDERS (LOAD_TS, ORDER_JSON, RAW_ORDER_ID)
         VALUES (
             CURRENT_TIMESTAMP(),
-            OBJECT_CONSTRUCT('order_no', i, 'amount', i*10),
-            'ORDER_' || i
+            OBJECT_CONSTRUCT('order_no', 12, 'amount', 12*10),
+            'ORDER_' || 12
         );
-    END FOR;
-    RETURN '10 rows inserted';
 END;
 $$;
