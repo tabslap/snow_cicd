@@ -30,3 +30,36 @@ jobs:
       with:
         use-oidc: true
         cli-version: "3.11"
+
+        name: Auto Fetch Repo
+
+on:
+  push:
+    branches: ["dev","main"]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  run-snowflake-fetch:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup config
+      run: |
+        echo "[connections.default]" > config.toml
+        echo "account = \"${{ secrets.SF_ACCOUNT }}\"" >> config.toml
+        echo "role = \"ACCOUNTADMIN\"" >> config.toml
+        echo "warehouse = \"COMPUTE_WH\"" >> config.toml
+        echo "database = \"SF\"" >> config.toml
+        echo "schema = \"PUBLIC\"" >> config.toml
+        chmod 600 config.toml
+
+    - name: Setup Snowflake CLI
+      uses: snowflakedb/snowflake-cli-action@v2.0
+      with:
+        use-oidc: true
+        cli-version: "3.11"
