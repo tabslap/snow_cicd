@@ -36,7 +36,7 @@ jobs:
           SNOW_GIT_REPO: ${{ secrets.SF_GIT_REPO }}
         
         run: |
-          # run ALTER GIT REPOSITORY $SNOW_GIT_REPO FETCH;
+          # run ALTER GIT REPOSITORY $SF_GIT_REPO FETCH;
           snowsql -a "$SNOWSQL_ACCOUNT" \
                   -u "$SNOWSQL_USER" \
                   -p "$SNOWSQL_PWD" \
@@ -44,4 +44,4 @@ jobs:
                   -d "$SNOWSQL_DATABASE" \
                   -s "$SNOWSQL_SCHEMA" \
                   -w "$SNOWSQL_WAREHOUSE" \
-                  -q "ALTER GIT REPOSITORY $SNOW_GIT_REPO FETCH;"
+                  -q "ALTER GIT REPOSITORY $SF_GIT_REPO FETCH;"
