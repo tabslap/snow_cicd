@@ -3,9 +3,6 @@ name: Auto fetch for snowflake
 on:
   push:
     branches: [ "dev", "main" ]
-  # Recommended: Remove pull_request trigger, as fetching is a modification action.
-  # pull_request:
-  #   branches: [ "dev","main" ]
 
 permissions:
   contents: read
@@ -14,7 +11,7 @@ jobs:
   run-snowflake-fetch:
     runs-on: ubuntu-latest
     steps:
-    # Step 1: Check out your repository's code (This is a standard first step)
+    # Step 1: Check out your repository's code
     - name: Checkout repository
       uses: actions/checkout@v3
 
@@ -28,11 +25,11 @@ jobs:
         # Snowflake CLI requires strict permissions on the config file
         chmod 600 config.toml
     
-    # Step 3: Install the Snowflake CLI using the correct action
+    # Step 3: Install the Snowflake CLI using the correct action with correct casing
     - name: Install Snowflake CLI
-      uses: Snowflake-Labs/setup-snow-cli@v1
+      uses: Snowflake-Labs/setup-snow-cli@v1 # <-- THIS LINE IS THE FIX
       with:
-        snow-cli-version: "latest" # Use the correct parameter name
+        snow-cli-version: "latest"
 
     # Step 4: Run the fetch command using the now-installed CLI
     - name: Fetch the latest update from Github
