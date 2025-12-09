@@ -1,0 +1,17 @@
+CREATE OR REPLACE PROCEDURE SF.PI_INGEST.INSERT_SAMPLE_ORDERS()
+RETURNS STRING
+LANGUAGE SQL
+AS
+$$
+BEGIN
+    FOR i IN 1..10 DO
+        INSERT INTO SF.PI_INGEST.RAW_ORDERS (LOAD_TS, ORDER_JSON, RAW_ORDER_ID)
+        VALUES (
+            CURRENT_TIMESTAMP(),
+            OBJECT_CONSTRUCT('order_no', i, 'amount', i*10),
+            'ORDER_' || i
+        );
+    END FOR;
+    RETURN '10 rows inserted';
+END;
+$$;
