@@ -23,7 +23,7 @@ jobs:
         chown $USER config.toml
         chmod 0600 config.toml
     - name: Snowflake CLI installation
-      uses: Snowflake-Labs/actions/checkout@v3
+      uses: actions/checkout@v3
       with:
         cli-version: "latest"
         default-config-file-path: "config.toml"
