@@ -44,4 +44,4 @@ jobs:
             -d "$SNOWSQL_DATABASE" \
             -s "$SNOWSQL_SCHEMA" \
             -w "$SNOWSQL_WAREHOUSE" \
-            -q "ALTER GIT REPOSITORY $SNOW_GIT_REPO FETCH;"
+            -q "SHOW GIT BRANCHES IN GIT REPOSITORY SF.REPO.SNOW_CICD;"
