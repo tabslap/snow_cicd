@@ -26,10 +26,11 @@ jobs:
         chmod 600 config.toml
     
     # Step 3: Install the Snowflake CLI using the correct action with correct casing
-    - name: Install Snowflake CLI
-      uses: Snowflake-Labs/setup-snow-cli@v1
+    - name: Setup Snowflake cli
+      uses: snowflakedb/snowflake-cli-action@v2.0
       with:
-        snow-cli-version: "latest"
+          use-oidc: true
+          cli-version: "3.11"
 
     # Step 4: Run the fetch command using the now-installed CLI
     - name: Fetch the latest update from Github
