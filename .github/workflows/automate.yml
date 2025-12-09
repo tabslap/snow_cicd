@@ -3,30 +3,38 @@ name: Auto fetch for snowflake
 on:
   push:
     branches: [ "dev", "main" ]
-  pull_request:
-    branches: [ "dev","main" ]
+  # Recommended: Remove pull_request trigger, as fetching is a modification action.
+  # pull_request:
+  #   branches: [ "dev","main" ]
 
 permissions:
   contents: read
 
 jobs:
-  build:
+  run-snowflake-fetch:
     runs-on: ubuntu-latest
     steps:
-    - name: Set up Snowflake connection by putting secrets into config file
+    # Step 1: Check out your repository's code (This is a standard first step)
+    - name: Checkout repository
+      uses: actions/checkout@v3
+
+    # Step 2: Create the config.toml file from your GitHub Secret
+    - name: Set up Snowflake connection config file
       env:
         SNOWCLI_CONFIG: ${{secrets.SNOWCLI_CONFIG}}
       shell: bash
       run: |
         echo -e "$SNOWCLI_CONFIG" > config.toml
-        # Snowflake CLI requires the config.toml file to limit its file permissions to read and write for the file owner only
-        chown $USER config.toml
-        chmod 0600 config.toml
-    - name: Snowflake CLI installation
-      uses: actions/checkout@v3
+        # Snowflake CLI requires strict permissions on the config file
+        chmod 600 config.toml
+    
+    # Step 3: Install the Snowflake CLI using the correct action
+    - name: Install Snowflake CLI
+      uses: Snowflake-Labs/setup-snow-cli@v1
       with:
-        cli-version: "latest"
-        default-config-file-path: "config.toml"
+        snow-cli-version: "latest" # Use the correct parameter name
+
+    # Step 4: Run the fetch command using the now-installed CLI
     - name: Fetch the latest update from Github
       run: |
-        snow sql -q "ALTER GIT REPOSITORY SNOW_CICD FETCH;"
+        snow sql -q "ALTER GIT REPOSITORY SNOW_CICD FETCH;" --config-file config.toml
