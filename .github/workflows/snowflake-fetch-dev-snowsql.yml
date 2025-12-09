@@ -35,7 +35,7 @@ jobs:
           SNOWSQL_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
         
         run: |
-          # run ALTER GIT REPOSITORY SNOW_CICD FETCH;
+          # run ALTER GIT REPOSITORY SF.REPO.SNOW_CICD FETCH;
           snowsql -a "$SNOWSQL_ACCOUNT" \
                   -u "$SNOWSQL_USER" \
                   -p "$SNOWSQL_PWD" \
