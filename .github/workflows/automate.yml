@@ -32,8 +32,14 @@ jobs:
           use-oidc: true
           cli-version: "3.11"
 
-    # Step 4: Run the fetch command using the now-installed CLI
-    - name: Fetch the latest update from Github
+    - name: Execute Snowflake CLI command
       run: |
-        # snow sql -q "ALTER GIT REPOSITORY SNOW_CICD FETCH;" --config-file config.toml
-        snow --config-file config.toml sql -q "ALTER GIT REPOSITORY SNOW_CICD FETCH;"
+          snow --version
+          snow connection test -x
+
+          
+    # Step 4: Run the fetch command using the now-installed CLI
+    # - name: Fetch the latest update from Github
+    #   run: |
+    #     # snow sql -q "ALTER GIT REPOSITORY SNOW_CICD FETCH;" --config-file config.toml
+    #     snow --config-file config.toml sql -q "ALTER GIT REPOSITORY SNOW_CICD FETCH;"
