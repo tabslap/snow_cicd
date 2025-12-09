@@ -27,21 +27,21 @@ jobs:
       - name: Fetch Git repository in Snowflake
         env:
           SNOWSQL_ACCOUNT:   ${{ secrets.SF_ACCOUNT }}
-          SNOWSQL_USER:      ${{ secrets.SF_USER }}
-          SNOWSQL_PWD:       ${{ secrets.SF_PASSWORD }}
-          SNOWSQL_DATABASE:  ${{ secrets.SF_DATABASE }}
-          SNOWSQL_SCHEMA:    ${{ secrets.SF_SCHEMA }}
-          SNOWSQL_ROLE:      ${{ secrets.SF_ROLE }}
-          SNOWSQL_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
-          SNOW_GIT_REPO:     ${{ secrets.SF_GIT_REPO }}
+          # SNOWSQL_USER:      ${{ secrets.SF_USER }}
+          # SNOWSQL_PWD:       ${{ secrets.SF_PASSWORD }}
+          # SNOWSQL_DATABASE:  ${{ secrets.SF_DATABASE }}
+          # SNOWSQL_SCHEMA:    ${{ secrets.SF_SCHEMA }}
+          # SNOWSQL_ROLE:      ${{ secrets.SF_ROLE }}
+          # SNOWSQL_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
+          # SNOW_GIT_REPO:     ${{ secrets.SF_GIT_REPO }}
 
         run: |
           snowsql \
-            -a "$SNOWSQL_ACCOUNT" \
-            -u "$SNOWSQL_USER" \
-            -p "$SNOWSQL_PWD" \
-            -r "$SNOWSQL_ROLE" \
-            -d "$SNOWSQL_DATABASE" \
-            -s "$SNOWSQL_SCHEMA" \
-            -w "$SNOWSQL_WAREHOUSE" \
+          #   -a "$SNOWSQL_ACCOUNT" \
+          #   -u "$SNOWSQL_USER" \
+          #   -p "$SNOWSQL_PWD" \
+          #   -r "$SNOWSQL_ROLE" \
+          #   -d "$SNOWSQL_DATABASE" \
+          #   -s "$SNOWSQL_SCHEMA" \
+          #   -w "$SNOWSQL_WAREHOUSE" \
             -q "SHOW GIT BRANCHES IN GIT REPOSITORY SF.REPO.SNOW_CICD;"
