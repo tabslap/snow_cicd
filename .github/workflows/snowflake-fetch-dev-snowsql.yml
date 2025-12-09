@@ -1,0 +1,48 @@
+name: Snowflake - Fetch Git Repository on dev push (snowsql)
+
+on:
+  push:
+    branches: [ "dev" ]
+
+env:
+  SNOW_GIT_REPO: ${{ secrets.SF_GIT_REPO }}   # e.g. SF.PUBLIC.SNOW_CICD
+
+jobs:
+  fetch-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo (optional)
+        uses: actions/checkout@v4
+
+      - name: Install SnowSQL
+        run: |
+          curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.32-linux_x86_64.bash
+          SNOWSQL_DEST=~/bin SNOWSQL_LOGIN_SHELL=~/.profile bash snowsql-1.2.32-linux_x86_64.bash
+          echo "::add-path::${HOME}/bin"
+
+      - name: Verify SnowSQL
+        run: snowsql -v
+
+      - name: Fetch Git repository in Snowflake (ALTER GIT REPOSITORY ... FETCH)
+        env:
+          SNOWSQL_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
+          SNOWSQL_USER:    ${{ secrets.SF_USER }}
+          SNOWSQL_PWD:     ${{ secrets.SF_PASSWORD }}
+          SNOWSQL_DATABASE: ${{ secrets.SF_DATABASE }}
+          SNOWSQL_SCHEMA:   ${{ secrets.SF_SCHEMA }}
+          SNOWSQL_ROLE:     ${{ secrets.SF_ROLE }}
+          SNOWSQL_WAREHOUSE: ${{ secrets.SF_WAREHOUSE }}
+        
+        run: |
+          # run ALTER GIT REPOSITORY <repo> FETCH;
+          snowsql -a "$SNOWSQL_ACCOUNT" \
+                  -u "$SNOWSQL_USER" \
+                  -p "$SNOWSQL_PWD" \
+                  -r "$SNOWSQL_ROLE" \
+                  -d "$SNOWSQL_DATABASE" \
+                  -s "$SNOWSQL_SCHEMA" \
+                  -w "$SNOWSQL_WAREHOUSE" \
+                  -q "ALTER GIT REPOSITORY ${SNOW_GIT_REPO} FETCH;"
+          
+          # optional: list files under the branch to verify (replace dev with your branch)
+          snowsql -a "$SNOWSQL_ACCOUNT" -u "$SNOWSQL_USER" -p "$SNOWSQL_PWD" -q "LIST @${SNOW_GIT_REPO}/branches/dev;"
