@@ -1,26 +1,26 @@
-name: Sync GitRepo with Snowflake
+# name: Sync GitRepo with Snowflake
 
-on:
-  push:
-    branches:
-      - main
-      - dev
-  workflow_dispatch:
+# on:
+#   push:
+#     branches:
+#       - main
+#       - dev
+#   workflow_dispatch:
 
-jobs:
-  sync:
-    runs-on: ubuntu-latest
+# jobs:
+#   sync:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+#     steps:
+#       - name: Checkout code
+#         uses: actions/checkout@v3
 
-      - name: Call Snowflake to sync GIT REPO
-        run: |
-          curl -X POST "https://${{ secrets.SF_ACCOUNT }}.snowflakecomputing.com/api/v2/statements" \
-            -H "Content-Type: application/json" \
-            -u "${{ secrets.SF_USER }}@${{ secrets.SF_ACCOUNT }}:${{ secrets.SF_PASSWORD }}" \
-            -d '{
-                  "statement": "ALTER GIT REPOSITORY SNOW_CICD FETCH;",
-                  "timeout": 60
-                }'
+#       - name: Call Snowflake to sync GIT REPO
+#         run: |
+#           curl -X POST "https://${{ secrets.SF_ACCOUNT }}.snowflakecomputing.com/api/v2/statements" \
+#             -H "Content-Type: application/json" \
+#             -u "${{ secrets.SF_USER }}@${{ secrets.SF_ACCOUNT }}:${{ secrets.SF_PASSWORD }}" \
+#             -d '{
+#                   "statement": "ALTER GIT REPOSITORY SNOW_CICD FETCH;",
+#                   "timeout": 60
+#                 }'
