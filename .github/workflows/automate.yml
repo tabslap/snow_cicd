@@ -35,4 +35,5 @@ jobs:
     # Step 4: Run the fetch command using the now-installed CLI
     - name: Fetch the latest update from Github
       run: |
-        snow sql -q "ALTER GIT REPOSITORY SNOW_CICD FETCH;" --config-file config.toml
+        # snow sql -q "ALTER GIT REPOSITORY SNOW_CICD FETCH;" --config-file config.toml
+        snow --config-file config.toml sql -q "ALTER GIT REPOSITORY SNOW_CICD FETCH;"
