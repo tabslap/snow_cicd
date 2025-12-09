@@ -14,11 +14,12 @@ jobs:
       - name: Checkout repo (optional)
         uses: actions/checkout@v4
 
-      - name: Install SnowSQL
+      - name: Install SnowSQL (official binary)
         run: |
           curl -O https://sfc-repo.snowflakecomputing.com/snowsql/bootstrap/1.2/linux_x86_64/snowsql-1.2.32-linux_x86_64.bash
-          SNOWSQL_DEST=~/bin SNOWSQL_LOGIN_SHELL=~/.profile bash snowsql-1.2.32-linux_x86_64.bash
-          echo "::add-path::${HOME}/bin"
+          SNOWSQL_DEST=${HOME}/bin SNOWSQL_LOGIN_SHELL=~/.profile bash snowsql-1.2.32-linux_x86_64.bash
+          # add the installation location to the runner PATH using the supported approach
+          echo "${HOME}/bin" >> $GITHUB_PATH
 
       - name: Verify SnowSQL
         run: snowsql -v
