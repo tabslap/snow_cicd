@@ -44,6 +44,3 @@ jobs:
                   -s "$SNOWSQL_SCHEMA" \
                   -w "$SNOWSQL_WAREHOUSE" \
                   -q "ALTER GIT REPOSITORY $SNOW_GIT_REPO FETCH;"
-          
-          # optional: list files under the branch to verify (replace dev with your branch)
-          snowsql -a "$SNOWSQL_ACCOUNT" -u "$SNOWSQL_USER" -p "$SNOWSQL_PWD" -q "LIST @${SNOW_GIT_REPO}/branches/dev;"
