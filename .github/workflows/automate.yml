@@ -1,36 +1,35 @@
-name: Auto Fetch Repo
+name: Python application
 
 on:
   push:
-    branches: ["dev","main"]
+    branches: ["main","dev"]
+  pull_request:
+    branches: ["main","dev"]
 
 permissions:
-  id-token: write
   contents: read
 
 jobs:
-  run-snowflake-fetch:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-    - name: Setup config
+    - name: Set up Snowflake config file
+      env:
+        SNOWCLI_CONFIG: ${{ secrets.SNOWCLI_CONFIG }}
       run: |
-        echo "[connections.default]" > config.toml
-        echo "account = \"${{ secrets.SF_ACCOUNT }}\"" >> config.toml
-        echo "role = \"ACCOUNTADMIN\"" >> config.toml
-        echo "warehouse = \"COMPUTE_WH\"" >> config.toml
-        echo "database = \"SF\"" >> config.toml
-        echo "schema = \"PUBLIC\"" >> config.toml
+        echo "$SNOWCLI_CONFIG" > config.toml
         chmod 600 config.toml
-
-    - name: Setup Snowflake CLI
-      uses: snowflakedb/snowflake-cli-action@v2.0
+    - name: Install Snowflake CLI
+      uses: Snowflake-Labs/snowflake-cli-action@v1.5
       with:
-        use-oidc: true
-        cli-version: "3.11"
+        cli-version: "latest"
+        default-config-file-path: "config.toml"
 
-    - name: Fetch Repo
+    - name: Fetch latest commit into Snowflake Git Repository
       run: |
-        snow --config-file config.toml sql -q "ALTER GIT REPOSITORY SNOW_CICD FETCH;"
+        snow sql -q "ALTER GIT REPOSITORY SNOW_CICD FETCH;" --connection demo
+ 
