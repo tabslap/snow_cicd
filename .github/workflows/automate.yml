@@ -1,8 +1,8 @@
-name: Auto fetch for snowflake
+name: Auto Fetch Repo
 
 on:
   push:
-    branches: [ "dev", "main" ]
+    branches: ["dev","main"]
 
 permissions:
   id-token: write
@@ -11,34 +11,22 @@ permissions:
 jobs:
   run-snowflake-fetch:
     runs-on: ubuntu-latest
-    steps:
-    # Step 1: Check out your repository's code
-    - name: Checkout repository
-      uses: actions/checkout@v3
 
-    # Step 2: Create the config.toml file from your GitHub Secret
-    - name: Set up Snowflake connection config file
-      env:
-        SNOWCLI_CONFIG: ${{secrets.SNOWCLI_CONFIG}}
-      shell: bash
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup config
       run: |
-        echo -e "$SNOWCLI_CONFIG" > config.toml
-        # Snowflake CLI requires strict permissions on the config file
+        echo "[connections.default]" > config.toml
+        echo "account = \"${{ secrets.SF_ACCOUNT }}\"" >> config.toml
+        echo "role = \"ACCOUNTADMIN\"" >> config.toml
+        echo "warehouse = \"COMPUTE_WH\"" >> config.toml
+        echo "database = \"SF\"" >> config.toml
+        echo "schema = \"PUBLIC\"" >> config.toml
         chmod 600 config.toml
-    
-    # Step 3: Install the Snowflake CLI using the correct action with correct casing
-    - name: Set up Snowflake CLI
+
+    - name: Setup Snowflake CLI
       uses: snowflakedb/snowflake-cli-action@v2.0
       with:
-          use-oidc: true
-          cli-version: "3.11"
-    - name: test connection
-      env:
-        SNOWFLAKE_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
-      run: snow connection test -x
-          
-    # Step 4: Run the fetch command using the now-installed CLI
-    # - name: Fetch the latest update from Github
-    #   run: |
-    #     # snow sql -q "ALTER GIT REPOSITORY SNOW_CICD FETCH;" --config-file config.toml
-    #     snow --config-file config.toml sql -q "ALTER GIT REPOSITORY SNOW_CICD FETCH;"
+        use-oidc: true
+        cli-version: "3.11"
