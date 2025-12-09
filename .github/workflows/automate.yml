@@ -33,7 +33,7 @@ jobs:
           cli-version: "3.11"
     - name: test connection
       env:
-        SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+        SNOWFLAKE_ACCOUNT: ${{ secrets.SF_ACCOUNT }}
       run: snow connection test -x
           
     # Step 4: Run the fetch command using the now-installed CLI
