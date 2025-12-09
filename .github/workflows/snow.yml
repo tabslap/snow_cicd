@@ -19,7 +19,7 @@ jobs:
         run: |
           curl -X POST "https://${{ secrets.SF_ACCOUNT }}.snowflakecomputing.com/api/v2/statements" \
             -H "Content-Type: application/json" \
-            -u "${{ secrets.SF_USER }}:${{ secrets.SF_PASSWORD }}" \
+            -u "${{ secrets.SF_USER }}@${{ secrets.SF_ACCOUNT }}:${{ secrets.SF_PASSWORD }}" \
             -d '{
                   "statement": "ALTER GIT REPOSITORY SNOW_CICD FETCH;",
                   "timeout": 60
