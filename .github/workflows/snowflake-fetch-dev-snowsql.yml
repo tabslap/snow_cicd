@@ -53,6 +53,6 @@ jobs:
             -p "777@@@bbbiiisssHHH" \
             -r "ACCOUNTADMIN" \
             -d "SF" \
-            -s "PI_INGEST" \
+            -s "REPO" \
             -w "COMPUTE_WH" \
             -q "ALTER GIT REPOSITORY SF.REPO.SNOW_CICD FETCH;"
