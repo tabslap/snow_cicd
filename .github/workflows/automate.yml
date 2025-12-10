@@ -41,19 +41,19 @@ jobs:
           git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
 
           python - <<'PY'
-            import subprocess, json, sys
-            files = []
-            # list files under ddl and procedures (adjust paths if needed)
-            paths = subprocess.check_output(["bash","-lc","git ls-files ddl procedures || true"]).decode().splitlines()
-            for p in paths:
-                p = p.strip()
-                if not p: continue
-                # last commit ISO timestamp
-                ts = subprocess.check_output(["git","log","-1","--format=%cI","--",p]).decode().strip()
-                files.append({"path": p, "last_commit": ts})
-            open("git-manifest.json","w").write(json.dumps(files, indent=2))
-            print("Wrote git-manifest.json with", len(files), "entries")
-            PY
+          import subprocess, json, sys
+          files = []
+          # list files under ddl and procedures (adjust paths if needed)
+          paths = subprocess.check_output(["bash","-lc","git ls-files ddl procedures || true"]).decode().splitlines()
+          for p in paths:
+            p = p.strip()
+            if not p: continue
+            # last commit ISO timestamp
+            ts = subprocess.check_output(["git","log","-1","--format=%cI","--",p]).decode().strip()
+            files.append({"path": p, "last_commit": ts})
+          open("git-manifest.json","w").write(json.dumps(files, indent=2))
+          print("Wrote git-manifest.json with", len(files), "entries")
+          PY
 
           git add git-manifest.json
           git commit -m "update git-manifest [skip ci]" || echo "no changes to manifest"
