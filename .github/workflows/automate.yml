@@ -28,13 +28,11 @@ jobs:
           warehouse = "${{ secrets.SNOW_WAREHOUSE }}"
           private_key_path = "rsa_key.p8"
           authenticator = "SNOWFLAKE_JWT"
-          database = "${{ secrets.SNOW_DATABASE }}"
-          schema = "${{ secrets.SNOW_SCHEMA }}"
           EOF
           chmod 600 config.toml
 
       - uses: Snowflake-Labs/snowflake-cli-action@v1.5
 
       - name: Alter Snowflake Git Repo Fetch
-        run: snow sql -q "ALTER GIT REPOSITORY <database>.<schema>.SNOW_CICD FETCH;"
+        run: snow sql -q "ALTER GIT REPOSITORY ${{ secrets.SNOW_DATABASE }}.${{ secrets.SNOW_SCHEMA }}.SNOW_CICD FETCH;"
  
