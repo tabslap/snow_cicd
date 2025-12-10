@@ -31,9 +31,36 @@ jobs:
           EOF
           chmod 600 config.toml
 
-      - name: Write git timestamp file
+      - name: Create git-manifest.json and push (skip CI)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo "{\"last_commit\": \"${{ github.event.head_commit.timestamp }}\"}" > git_timestamp.json
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # ensure auth for push
+          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
+
+          python - <<'PY'
+            import subprocess, json, sys
+            files = []
+            # list files under ddl and procedures (adjust paths if needed)
+            paths = subprocess.check_output(["bash","-lc","git ls-files ddl procedures || true"]).decode().splitlines()
+            for p in paths:
+                p = p.strip()
+                if not p: continue
+                # last commit ISO timestamp
+                ts = subprocess.check_output(["git","log","-1","--format=%cI","--",p]).decode().strip()
+                files.append({"path": p, "last_commit": ts})
+            open("git-manifest.json","w").write(json.dumps(files, indent=2))
+            print("Wrote git-manifest.json with", len(files), "entries")
+            PY
+
+          git add git-manifest.json
+          git commit -m "update git-manifest [skip ci]" || echo "no changes to manifest"
+          git push origin HEAD || echo "push failed"
+
+
+
 
       - uses: Snowflake-Labs/snowflake-cli-action@v1.5
 
