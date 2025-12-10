@@ -1,35 +1,40 @@
-name: Python application
+name: Snowflake Auto Fetch
 
 on:
   push:
-    branches: ["main","dev"]
+   branches: [ "main","dev" ]
   pull_request:
-    branches: ["main","dev"]
-
-permissions:
-  contents: read
+   branches: [ "main","dev" ]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-    - name: Set up Snowflake config file
-      env:
-        SNOWCLI_CONFIG: ${{ secrets.SNOWCLI_CONFIG }}
-      run: |
-        echo "$SNOWCLI_CONFIG" > config.toml
-        chmod 600 config.toml
-    - name: Install Snowflake CLI
-      uses: Snowflake-Labs/snowflake-cli-action@v1.5
-      with:
-        cli-version: "latest"
-        default-config-file-path: "config.toml"
+      - name: Restore private key
+        run: |
+          printf "%s" "${{ secrets.SNOWFLAKE_PRIVATE_KEY }}" > rsa_key.p8
+          chmod 600 rsa_key.p8
 
-    - name: Fetch latest commit into Snowflake Git Repository
-      run: |
-        snow sql -q "ALTER GIT REPOSITORY SNOW_CICD FETCH;" --connection demo
+      - name: Create SnowCLI config file
+        run: |
+          cat <<EOF > config.toml
+          [connections.default]
+          account = "${{ secrets.SNOW_ACCOUNT }}"
+          user = "${{ secrets.SNOW_USER }}"
+          role = "${{ secrets.SNOW_ROLE }}"
+          warehouse = "${{ secrets.SNOW_WAREHOUSE }}"
+          private_key_path = "rsa_key.p8"
+          authenticator = "SNOWFLAKE_JWT"
+          database = "${{ secrets.SNOW_DATABASE }}"
+          schema = "${{ secrets.SNOW_SCHEMA }}"
+          EOF
+          chmod 600 config.toml
+
+      - uses: Snowflake-Labs/snowflake-cli-action@v1.5
+
+      - name: Alter Snowflake Git Repo Fetch
+        run: snow sql -q "ALTER GIT REPOSITORY <database>.<schema>.REPO FETCH;"
  
