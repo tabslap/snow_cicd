@@ -14,35 +14,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      
-      - name: Create git-manifest.json and push (skip CI)
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}"
-      
-          python - <<'PY'
-          import subprocess, json
-          paths = subprocess.check_output(["bash","-lc","git ls-files ddl procedures || true"]).decode().splitlines()
-          out = []
-          for p in paths:
-            p = p.strip()
-            if not p: continue
-            # get true last commit that touched this file
-            ts = subprocess.check_output(["git","log","--follow","-1","--format=%cI","--",p]).decode().strip()
-            out.append({"path": p, "last_commit": ts})
-          open("git-manifest.json","w").write(json.dumps(out, indent=2))
-          print("Wrote git-manifest.json with", len(out), "entries")
-          PY
-      
-          git add git-manifest.json
-          git commit -m "update git-manifest [skip ci]" || echo "no changes to manifest"
-          git push origin HEAD || echo "push failed"
-
-
-
       - uses: actions/checkout@v4
 
       - name: Restore private key
@@ -62,7 +33,6 @@ jobs:
           authenticator = "SNOWFLAKE_JWT"
           EOF
           chmod 600 config.toml
-
 
       - uses: actions/checkout@v4
         with:
