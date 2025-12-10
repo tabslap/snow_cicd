@@ -31,6 +31,10 @@ jobs:
           EOF
           chmod 600 config.toml
 
+      - name: Write git timestamp file
+        run: |
+          echo "{\"last_commit\": \"${{ github.event.head_commit.timestamp }}\"}" > git_timestamp.json
+
       - uses: Snowflake-Labs/snowflake-cli-action@v1.5
 
       - name: Alter Snowflake Git Repo Fetch
