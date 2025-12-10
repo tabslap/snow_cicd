@@ -1,5 +1,8 @@
 name: Snowflake Auto Fetch
 
+permissions:
+  contents: write
+
 on:
   push:
    branches: [ "main","dev" ]
