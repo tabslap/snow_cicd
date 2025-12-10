@@ -36,5 +36,5 @@ jobs:
       - uses: Snowflake-Labs/snowflake-cli-action@v1.5
 
       - name: Alter Snowflake Git Repo Fetch
-        run: snow sql -q "ALTER GIT REPOSITORY <database>.<schema>.REPO FETCH;"
+        run: snow sql -q "ALTER GIT REPOSITORY <database>.<schema>.SNOW_CICD FETCH;"
  
