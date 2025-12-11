@@ -1,0 +1,11 @@
+CREATE OR REPLACE TABLE EMPLOYEE (
+    ID INTEGER,
+    NAME STRING,
+    DEPARTMENT STRING
+);
+
+INSERT INTO EMPLOYEE (ID, NAME, DEPARTMENT)
+VALUES
+    (1099, 'Tabish', 'Delivery'),
+    (1002, 'Sara', 'HR'),
+    (1003, 'Mike', 'Finance');
