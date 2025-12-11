@@ -1,8 +1,5 @@
 name: Snowflake Auto Fetch
 
-permissions:
-  contents: write
-
 on:
   push:
    branches: [ "main","dev" ]
@@ -33,10 +30,6 @@ jobs:
           authenticator = "SNOWFLAKE_JWT"
           EOF
           chmod 600 config.toml
-
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0       # fetch full history so git log works per-file
 
       - uses: Snowflake-Labs/snowflake-cli-action@v1.5
 
