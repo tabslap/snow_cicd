@@ -38,4 +38,5 @@ jobs:
           snow sql -q "ALTER GIT REPOSITORY ${{secrets.SNOW_DATABASE }}.${{ secrets.SNOW_SCHEMA }}.SNOW_CICD FETCH;"
           snow sql -q "USE ROLE ${{secrets.SNOW_ROLE}}"
           snow sql -q "EXECUTE IMMEDIATE FROM '@${{secrets.SNOW_DATABASE }}.${{ secrets.SNOW_SCHEMA }}.SNOW_CICD/branches/dev/ddl/employee_table.sql';"
+          snow sql -q "EXECUTE IMMEDIATE FROM '@${{secrets.SNOW_DATABASE }}.${{ secrets.SNOW_SCHEMA }}.SNOW_CICD/branches/dev/procedures/employee_times.sql';"
           snow sql -q "CALL SF.TRANSFORMED.SP_TRANSFORM_EMPLOYEE();"
